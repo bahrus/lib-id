@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <template id=light-children>
+        <span>{{msg}}</span>
+    </template>
+    <ul>
+        <li>header</li>
+        <li-bid id=libid template-map-ids='{"li":"/light-children"}'></li-bid>
+        <li>footer</li>
+    </ul>
+    <script type=importmap>
+    {
+        "imports":{
+            "xtal-element/": "../node_modules/xtal-element/",
+            "trans-render/": "../node_modules/trans-render/",
+            "ib-id/": "../node_modules/ib-id/",
+            "@github/": "../node_modules/@github/"
+        }
+    }
+</script>
+<script type=module>
+    import '../li-bid.js';
+</script>
+
+<script>
+    libid.list = [
+        {msg: 'hello 1'},
+        {msg: 'hello 2'},
+        {msg: 'hello 3'},
+        {msg: 'hello 4'}
+    ];
+    setTimeout(() => {
+        libid.list = [
+            {msg: 'hello 3'},
+            {msg: 'hello 4'}
+        ];
+        setTimeout(() => {
+            libid.list = [
+                {msg: 'hello 1'},
+                {msg: 'hello 2'},
+                {msg: 'hello 3'},
+                {msg: 'hello 4'}
+            ];
+        }, 10000)
+    }, 10000);
+</script>
+</body>
+</html>

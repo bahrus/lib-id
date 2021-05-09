@@ -4,11 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "serve": "node node_modules/xtal-test/serve.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bahrus/lib-id.git"
+  },
+  "dependencies": {
+    "@github/template-parts": "0.3.2",
+    "ib-id": "0.0.34",
+    "trans-render": "0.0.286"
+  },
+  "devDependencies": {
+    "@skypack/package-check": "0.2.2",
+    "xtal-test": "0.0.50"
   },
   "author": "",
   "license": "MIT",
