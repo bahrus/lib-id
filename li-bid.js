@@ -36,6 +36,7 @@ export class LiBid extends IBid {
 LiBid.is = 'li-bid';
 const linkMainTemplate = ({ templateId, self }) => {
     self.mainTemplate = upShadowSearch(self, templateId);
+    //self.mainTemplate.remove();
     linkInitialized(self);
 };
 const templatesManaged = ({ templateMapIds, self }) => {
@@ -76,7 +77,7 @@ const strProp1 = {
 const propDefMap = {
     templateMapIds: objProp2,
     templateMapElements: objProp1,
-    mainTemplate: objProp1,
+    //mainTemplate: objProp1,
     templateId: strProp1
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
