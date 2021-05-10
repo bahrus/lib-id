@@ -36,7 +36,7 @@ export class LiBid extends IBid{
 
 const linkMainTemplate = ({templateId, self}: LiBid) => {
     self.mainTemplate = upShadowSearch(self, templateId!) as HTMLTemplateElement;
-    //self.mainTemplate.remove();
+    self.mainTemplate.remove();
     linkInitialized(self);
 };
 

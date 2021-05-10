@@ -2,6 +2,38 @@
 
 li-bid provides a repeating web component.  It extends [i-bid](https://github.com/bahrus/ib-id).  Whereas i-bid has [no support for light children](https://github.com/bahrus/ib-id#what-if-i-want-to-repeat-some-web-components-that-require-non-shadow-light-children), li-bid does.  It uses github's [template parts library](https://github.com/github/template-parts/) to populate the light children.
 
+## Sample syntax I
+
+```html
+<ul>
+    <li>header</li>
+    <li-bid template-id=./message list='[{"msg": "hello 1"}, {"msg": "hello 2"}]'>
+        <li>
+            <template id=message>
+                <span>{{msg}}</span>
+            </template>
+        </li>
+    </li-bid>
+    <li>footer</li>
+</ul>
+```
+
+produces:
+
+```html
+<ul>
+    <li>header</li>
+    <li-bid template-id=./message list='[{"msg": "hello 1"}, {"msg": "hello 2"}]' style="display:none;"></li-bid>
+    <li>
+        <span>hello 1</span>
+    </li>
+    <li>
+        <span>hello 2</span>
+    </li>    
+    <li>footer</li>
+</ul>
+```
+
 ## Sample syntax II
 
 ```html
