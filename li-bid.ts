@@ -6,14 +6,21 @@ import {upShadowSearch} from 'trans-render/lib/upShadowSearch.js';
 export class LiBid extends IBid{
     static is = 'li-bid';
     propActions = propActions;
+    templateId: string | undefined;
     templateMapIds: {[key: string] : string} | undefined;
     templateMapElements: {[key: string]: HTMLTemplateElement} | undefined;
+    mainTemplate: HTMLTemplateElement | undefined;
     templateInstances = new WeakMap<Element, TemplateInstance>();
     updateLightChildren(element: Element, item: any, idx: number){
         if(!this.templateInstances.has(element)){
-            const template = this.templateMapElements![element.localName];
-            if(template === undefined) return;
-            const tpl = new TemplateInstance(template, item);
+            let template: HTMLTemplateElement | undefined;
+            if(this.templateMapElements !== undefined){
+                template = this.templateMapElements![element.localName];
+                if(template === undefined) return;
+            }else{
+                template = this.mainTemplate;
+            }
+            const tpl = new TemplateInstance(template!, item);
             this.templateInstances.set(element, tpl);
             element.appendChild(tpl);
         }else{
@@ -27,7 +34,14 @@ export class LiBid extends IBid{
     }
 }
 
-const templatesManaged = ({templateMapIds, self}: REpetir) => {
+const linkMainTemplate = ({templateId, self}: LiBid) => {
+    self.mainTemplate = upShadowSearch(self, templateId!) as HTMLTemplateElement;
+    linkInitialized(self);
+};
+
+
+
+const templatesManaged = ({templateMapIds, self}: LiBid) => {
     
     const templateInstances: {[key: string]: HTMLTemplateElement} = {};
     for(const key in templateMapIds){
@@ -39,9 +53,10 @@ const templatesManaged = ({templateMapIds, self}: REpetir) => {
         templateInstances[key] = referencedTemplate;
     }
     self.templateMapElements = templateInstances;
+    linkInitialized(self);
 };
 
-const linkInitialized = ({ownedSiblingCount, templateMapElements: templateRefs, self}: REpetir) => {
+const linkInitialized = ({ownedSiblingCount, self}: LiBid) => {
     if(ownedSiblingCount !== 0){
         markOwnership(self, ownedSiblingCount!);
     }else{
@@ -50,15 +65,26 @@ const linkInitialized = ({ownedSiblingCount, templateMapElements: templateRefs, 
 }
 
 const propActions = [
+    linkMainTemplate,
     templatesManaged,
-    linkInitialized,
     onNewList,
 ] as PropAction[];
 
+const baseProp: PropDef ={
+    dry: true,
+    async: true,
+};
+const strProp1: PropDef = {
+    ...baseProp,
+    stopReactionsIfFalsy: true,
+    type: String,
+};
 const propDefMap: PropDefMap<LiBid> = {
     templateMapIds: objProp2,
-    templateMapElements: objProp1
-}
+    templateMapElements: objProp1,
+    mainTemplate: objProp1,
+    templateId: strProp1
+};
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 xc.letThereBeProps(LiBid, slicedPropDefs, 'onPropChange');
 xc.define(LiBid);

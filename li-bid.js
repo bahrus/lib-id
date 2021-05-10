@@ -10,9 +10,15 @@ export class LiBid extends IBid {
     }
     updateLightChildren(element, item, idx) {
         if (!this.templateInstances.has(element)) {
-            const template = this.templateMapElements[element.localName];
-            if (template === undefined)
-                return;
+            let template;
+            if (this.templateMapElements !== undefined) {
+                template = this.templateMapElements[element.localName];
+                if (template === undefined)
+                    return;
+            }
+            else {
+                template = this.mainTemplate;
+            }
             const tpl = new TemplateInstance(template, item);
             this.templateInstances.set(element, tpl);
             element.appendChild(tpl);
@@ -28,6 +34,10 @@ export class LiBid extends IBid {
     }
 }
 LiBid.is = 'li-bid';
+const linkMainTemplate = ({ templateId, self }) => {
+    self.mainTemplate = upShadowSearch(self, templateId);
+    linkInitialized(self);
+};
 const templatesManaged = ({ templateMapIds, self }) => {
     const templateInstances = {};
     for (const key in templateMapIds) {
@@ -39,8 +49,9 @@ const templatesManaged = ({ templateMapIds, self }) => {
         templateInstances[key] = referencedTemplate;
     }
     self.templateMapElements = templateInstances;
+    linkInitialized(self);
 };
-const linkInitialized = ({ ownedSiblingCount, templateMapElements: templateRefs, self }) => {
+const linkInitialized = ({ ownedSiblingCount, self }) => {
     if (ownedSiblingCount !== 0) {
         markOwnership(self, ownedSiblingCount);
     }
@@ -49,13 +60,24 @@ const linkInitialized = ({ ownedSiblingCount, templateMapElements: templateRefs,
     }
 };
 const propActions = [
+    linkMainTemplate,
     templatesManaged,
-    linkInitialized,
     onNewList,
 ];
+const baseProp = {
+    dry: true,
+    async: true,
+};
+const strProp1 = {
+    ...baseProp,
+    stopReactionsIfFalsy: true,
+    type: String,
+};
 const propDefMap = {
     templateMapIds: objProp2,
-    templateMapElements: objProp1
+    templateMapElements: objProp1,
+    mainTemplate: objProp1,
+    templateId: strProp1
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 xc.letThereBeProps(LiBid, slicedPropDefs, 'onPropChange');
