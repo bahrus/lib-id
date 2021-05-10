@@ -7,15 +7,12 @@
     <title>Document</title>
 </head>
 <body>
+    <template id=message>
+        <span>{{msg}}</span>
+    </template>
     <ul>
         <li>header</li>
-        <li-bid template-id=./message list='[{"msg": "hello 1"}, {"msg": "hello 2"}]'>
-            <li>
-                <template id=message>
-                    <span>{{msg}}</span>
-                </template>
-            </li>
-        </li-bid>
+        <li-bid template-id=./message list='[{"msg": "hello 1"}, {"msg": "hello 2"}]'></li-bid>
         <li>footer</li>
     </ul>
     <script type=importmap>

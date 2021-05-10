@@ -37,6 +37,21 @@ produces:
 ## Sample syntax II
 
 ```html
+<template id=message>
+    <span>{{msg}}</span>
+</template>
+<ul>
+    <li>header</li>
+    <li-bid template-id=./message list='[{"msg": "hello 1"}, {"msg": "hello 2"}]'></li-bid>
+    <li>footer</li>
+</ul>
+```
+
+Same results as before.
+
+## Sample syntax III
+
+```html
 <template id=light-children>
     <span>{{msg}}</span>
 </template>
