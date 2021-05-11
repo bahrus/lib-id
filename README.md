@@ -86,6 +86,8 @@ Same results as before.
 </script>
 ```
 
+## Sample syntax III
+
 ## Viewing the component locally
 
 1.  Install git

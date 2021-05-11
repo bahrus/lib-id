@@ -9,6 +9,7 @@ export class LiBid extends IBid{
     templateId: string | undefined;
     templateMapIds: {[key: string] : string} | undefined;
     templateMapElements: {[key: string]: HTMLTemplateElement} | undefined;
+    _retries = 0;
     mainTemplate: HTMLTemplateElement | undefined;
     templateInstances = new WeakMap<Element, TemplateInstance>();
     updateLightChildren(element: Element, item: any, idx: number){
@@ -35,8 +36,16 @@ export class LiBid extends IBid{
 }
 
 const linkMainTemplate = ({templateId, self}: LiBid) => {
-    self.mainTemplate = upShadowSearch(self, templateId!) as HTMLTemplateElement;
-    self.mainTemplate.remove();
+    const mainTemplate = upShadowSearch(self, templateId!) as HTMLTemplateElement;
+    if(!mainTemplate && self._retries < 1){
+        self._retries++;
+        setTimeout(() =>{
+            linkMainTemplate(self);
+        }, 50);
+        return;
+    }
+    self.mainTemplate = mainTemplate;
+    mainTemplate.remove();
     linkInitialized(self);
 };
 

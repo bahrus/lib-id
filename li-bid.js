@@ -6,6 +6,7 @@ export class LiBid extends IBid {
     constructor() {
         super(...arguments);
         this.propActions = propActions;
+        this._retries = 0;
         this.templateInstances = new WeakMap();
     }
     updateLightChildren(element, item, idx) {
@@ -35,8 +36,16 @@ export class LiBid extends IBid {
 }
 LiBid.is = 'li-bid';
 const linkMainTemplate = ({ templateId, self }) => {
-    self.mainTemplate = upShadowSearch(self, templateId);
-    self.mainTemplate.remove();
+    const mainTemplate = upShadowSearch(self, templateId);
+    if (!mainTemplate && self._retries < 1) {
+        self._retries++;
+        setTimeout(() => {
+            linkMainTemplate(self);
+        }, 50);
+        return;
+    }
+    self.mainTemplate = mainTemplate;
+    mainTemplate.remove();
     linkInitialized(self);
 };
 const templatesManaged = ({ templateMapIds, self }) => {
