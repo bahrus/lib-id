@@ -37,12 +37,17 @@ export class LiBid extends IBid {
 LiBid.is = 'li-bid';
 const linkMainTemplate = ({ templateId, self }) => {
     const mainTemplate = upShadowSearch(self, templateId);
-    if (!mainTemplate && self._retries < 1) {
-        self._retries++;
-        setTimeout(() => {
-            linkMainTemplate(self);
-        }, 50);
-        return;
+    if (!mainTemplate) {
+        if (self._retries < 1) {
+            self._retries++;
+            setTimeout(() => {
+                linkMainTemplate(self);
+            }, 50);
+            return;
+        }
+        else {
+            console.error("Unable to locate template: " + templateId, self);
+        }
     }
     self.mainTemplate = mainTemplate;
     mainTemplate.remove();
