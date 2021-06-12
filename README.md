@@ -57,36 +57,57 @@ Same results as before.
 </template>
 <ul>
     <li>header</li>
-    <li-bid id=repetir template-map-ids='{"li":"/light-children"}'></li-bid>
+    <li-bid id=libid template-map-ids='{"li":"/light-children"}'></li-bid>
     <li>footer</li>
 </ul>
 
 
 <script>
-    repetir.list = [
+    libid.list = [
         {msg: 'hello 1'},
         {msg: 'hello 2'},
         {msg: 'hello 3'},
         {msg: 'hello 4'}
     ];
     setTimeout(() => {
-        repetir.list = [
+        libid.list = [
             {msg: 'hello 3'},
             {msg: 'hello 4'}
         ];
         setTimeout(() => {
-            repetir.list = [
+            libid.list = [
                 {msg: 'hello 1'},
                 {msg: 'hello 2'},
                 {msg: 'hello 3'},
                 {msg: 'hello 4'}
             ];
-        }, 10000)
+        }, 10000);
     }, 10000);
 </script>
 ```
 
-## Sample syntax III
+## Sample syntax III [TODO]
+
+### Binding to a server-rendered / editable datastream.
+
+```html
+<template id=light-children>
+    <span>{{msg}}</span>
+</template>
+<ul>
+    <li>header</li>
+    <li-bid id=libid template-map-ids='{"li":"/light-children"}'>
+        <templ-model>
+            <obj-ml name=msg>hello 1</obj-ml>
+            <obj-ml name=msg>hello 2</obj-ml>
+            <obj-ml name=msg>hello 3</obj-ml>
+            <obj-ml name=msg>hello 4</obj-ml>
+        </templ-model>
+    </li-bid>
+    <li>footer</li>
+</ul>
+```
+
 
 ## Viewing the component locally
 
