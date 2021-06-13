@@ -103,6 +103,7 @@ Same results as before.
             <obj-ml name=msg>hello 3</obj-ml>
             <obj-ml name=msg>hello 4</obj-ml>
         </templ-model>
+        <p-u on=value-changed to=libid prop=list val=target.value clone></p-u>
     </li-bid>
     <li>footer</li>
 </ul>
