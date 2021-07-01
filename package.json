@@ -13,12 +13,12 @@
   },
   "dependencies": {
     "@github/template-parts": "0.3.2",
-    "ib-id": "0.0.39",
-    "trans-render": "0.0.286"
+    "ib-id": "0.0.42",
+    "trans-render": "0.0.291"
   },
   "devDependencies": {
     "@skypack/package-check": "0.2.2",
-    "xtal-test": "0.0.50"
+    "xtal-test": "0.0.51"
   },
   "author": "",
   "license": "MIT",
