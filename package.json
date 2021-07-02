@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@github/template-parts": "0.3.2",
-    "ib-id": "0.0.45",
+    "ib-id": "0.0.46",
     "trans-render": "0.0.291"
   },
   "devDependencies": {

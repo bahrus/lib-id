@@ -75,7 +75,7 @@ const templatesManaged = ({ templateMapIds, self }) => {
 // }
 const propActions = [
     linkMainTemplate,
-    linkInitialized,
+    //linkInitialized,
     templatesManaged,
     onNewList,
 ];

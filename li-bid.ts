@@ -80,7 +80,7 @@ const templatesManaged = ({templateMapIds, self}: LiBid) => {
 
 const propActions = [
     linkMainTemplate,
-    linkInitialized,
+    //linkInitialized,
     templatesManaged,
     onNewList,
 ] as PropAction[];
