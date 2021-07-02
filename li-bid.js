@@ -1,16 +1,14 @@
-import { IBid, objProp1, objProp2, onNewList, markOwnership } from 'ib-id/i-bid.js';
+import { IBid, objProp1, objProp2, onNewList, linkInitialized } from 'ib-id/i-bid.js';
 import { xc } from 'xtal-element/lib/XtalCore.js';
 import { TemplateInstance } from '@github/template-parts/lib/index.js';
 import { upShadowSearch } from 'trans-render/lib/upShadowSearch.js';
 export class LiBid extends IBid {
-    static is = 'li-bid';
-    propActions = propActions;
-    templateId;
-    templateMapIds;
-    templateMapElements;
-    _retries = 0;
-    mainTemplate;
-    templateInstances = new WeakMap();
+    constructor() {
+        super(...arguments);
+        this.propActions = propActions;
+        this._retries = 0;
+        this.templateInstances = new WeakMap();
+    }
     updateLightChildren(element, item, idx) {
         if (!this.templateInstances.has(element)) {
             let template;
@@ -36,6 +34,7 @@ export class LiBid extends IBid {
         super.connectedCallback();
     }
 }
+LiBid.is = 'li-bid';
 const linkMainTemplate = ({ templateId, self }) => {
     const mainTemplate = upShadowSearch(self, templateId);
     if (!mainTemplate) {
@@ -67,16 +66,16 @@ const templatesManaged = ({ templateMapIds, self }) => {
     self.templateMapElements = templateInstances;
     linkInitialized(self);
 };
-const linkInitialized = ({ ownedSiblingCount, self }) => {
-    if (ownedSiblingCount !== 0) {
-        markOwnership(self, ownedSiblingCount);
-    }
-    else {
-        self.initialized = true;
-    }
-};
+// const linkInitialized = ({ownedSiblingCount, self}: LiBid) => {
+//     if(ownedSiblingCount !== 0){
+//         markOwnership(self, ownedSiblingCount!);
+//     }else{
+//         self.initialized = true;
+//     }
+// }
 const propActions = [
     linkMainTemplate,
+    linkInitialized,
     templatesManaged,
     onNewList,
 ];

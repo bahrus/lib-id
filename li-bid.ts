@@ -1,4 +1,4 @@
-import {IBid, objProp1, objProp2, onNewList, markOwnership} from 'ib-id/i-bid.js';
+import {IBid, objProp1, objProp2, onNewList, markOwnership, linkInitialized} from 'ib-id/i-bid.js';
 import {xc, PropAction, PropDef, PropDefMap} from 'xtal-element/lib/XtalCore.js';
 import {TemplateInstance} from '@github/template-parts/lib/index.js';
 import {upShadowSearch} from 'trans-render/lib/upShadowSearch.js';
@@ -70,16 +70,17 @@ const templatesManaged = ({templateMapIds, self}: LiBid) => {
     linkInitialized(self);
 };
 
-const linkInitialized = ({ownedSiblingCount, self}: LiBid) => {
-    if(ownedSiblingCount !== 0){
-        markOwnership(self, ownedSiblingCount!);
-    }else{
-        self.initialized = true;
-    }
-}
+// const linkInitialized = ({ownedSiblingCount, self}: LiBid) => {
+//     if(ownedSiblingCount !== 0){
+//         markOwnership(self, ownedSiblingCount!);
+//     }else{
+//         self.initialized = true;
+//     }
+// }
 
 const propActions = [
     linkMainTemplate,
+    linkInitialized,
     templatesManaged,
     onNewList,
 ] as PropAction[];
