@@ -3,12 +3,14 @@ import { xc } from 'xtal-element/lib/XtalCore.js';
 import { TemplateInstance } from '@github/template-parts/lib/index.js';
 import { upShadowSearch } from 'trans-render/lib/upShadowSearch.js';
 export class LiBid extends IBid {
-    constructor() {
-        super(...arguments);
-        this.propActions = propActions;
-        this._retries = 0;
-        this.templateInstances = new WeakMap();
-    }
+    static is = 'li-bid';
+    propActions = propActions;
+    templateId;
+    templateMapIds;
+    templateMapElements;
+    _retries = 0;
+    mainTemplate;
+    templateInstances = new WeakMap();
     updateLightChildren(element, item, idx) {
         if (!this.templateInstances.has(element)) {
             let template;
@@ -34,7 +36,6 @@ export class LiBid extends IBid {
         super.connectedCallback();
     }
 }
-LiBid.is = 'li-bid';
 const linkMainTemplate = ({ templateId, self }) => {
     const mainTemplate = upShadowSearch(self, templateId);
     if (!mainTemplate) {
