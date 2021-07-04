@@ -46,10 +46,10 @@ const linkMainTemplate = ({templateId, self}: LiBid) => {
             return;
         }else{
             console.error("Unable to locate template: " + templateId, self);
+            return;
         }
     } 
     self.mainTemplate = mainTemplate;
-    mainTemplate.remove();
     linkInitialized(self);
 };
 
