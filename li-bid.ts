@@ -50,6 +50,10 @@ const linkMainTemplate = ({templateId, self}: LiBid) => {
         }
     } 
     self.mainTemplate = mainTemplate;
+    const parentElement = mainTemplate.parentElement;
+    if(parentElement !== null && parentElement !== self && self.contains(mainTemplate)){
+        self.appendChild(mainTemplate);
+    }
     linkInitialized(self);
 };
 
