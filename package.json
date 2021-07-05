@@ -12,7 +12,7 @@
     "url": "git+https://github.com/bahrus/lib-id.git"
   },
   "dependencies": {
-    "templ-arts": "0.0.2",
+    "templ-arts": "0.0.3",
     "ib-id": "0.0.48",
     "trans-render": "0.0.291"
   },
