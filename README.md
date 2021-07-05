@@ -23,7 +23,49 @@ produces:
 ```html
 <ul>
     <li>header</li>
-    <li-bid template-id=./message list='[{"msg": "hello 1"}, {"msg": "hello 2"}]' style="display:none;"></li-bid>
+    <li-bid template-id=./message list='[{"msg": "hello 1"}, {"msg": "hello 2"}]' style="display:none;">
+        <template id=message>
+            <span>{{msg}}</span>
+        </template>
+    </li-bid>
+    <li>
+        <span>hello 1</span>
+    </li>
+    <li>
+        <span>hello 2</span>
+    </li>    
+    <li>footer</li>
+</ul>
+```
+
+## Sample syntax II
+
+The special template-id value of "innerTemplate" means just search inside for the template to use:
+
+```html
+<ul>
+    <li>header</li>
+    <li-bid template-id=innerTemplate list='[{"msg": "hello 1"}, {"msg": "hello 2"}]'>
+        <li>
+            <template>
+                <span>{{msg}}</span>
+            </template>
+        </li>
+    </li-bid>
+    <li>footer</li>
+</ul>
+```
+
+produces:
+
+```html
+<ul>
+    <li>header</li>
+    <li-bid template-id=innerTemplate list='[{"msg": "hello 1"}, {"msg": "hello 2"}]' style="display:none;">
+        <template>
+            <span>{{msg}}</span>
+        </template>
+    </li-bid>
     <li>
         <span>hello 1</span>
     </li>
