@@ -30,14 +30,19 @@ export class LiBid extends IBid{
         }
     }
     connectedCallback(){
-        xc.mergeProps(this, slicedPropDefs);
         super.connectedCallback();
+        xc.mergeProps(this, slicedPropDefs);
     }
 }
 
 const linkMainTemplate = ({templateId, self}: LiBid) => {
-    const mainTemplate = upShadowSearch(self, templateId!) as HTMLTemplateElement;
-    if(!mainTemplate){
+    let mainTemplate: HTMLTemplateElement | null;
+    if(templateId === 'innerTemplate'){
+        mainTemplate = self.querySelector('template');
+    }else{
+        mainTemplate = upShadowSearch(self, templateId!) as HTMLTemplateElement | null;
+    }
+    if(mainTemplate === null){
         if(self._retries < 1){
             self._retries++;
             setTimeout(() =>{
