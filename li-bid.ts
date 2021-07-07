@@ -1,4 +1,4 @@
-import {IBid, objProp1, objProp2, onNewList, markOwnership, linkInitialized} from 'ib-id/i-bid.js';
+import {IBid, objProp1, objProp2, onNewList, markOwnership, linkInitialized, onInheritWeakMap} from 'ib-id/i-bid.js';
 import {xc, PropAction, PropDef, PropDefMap} from 'xtal-element/lib/XtalCore.js';
 import {TemplateInstance} from 'templ-arts/lib/index.js';
 import {upShadowSearch} from 'trans-render/lib/upShadowSearch.js';
@@ -92,6 +92,7 @@ const propActions = [
     //linkInitialized,
     templatesManaged,
     onNewList,
+    onInheritWeakMap,
 ] as PropAction[];
 
 const baseProp: PropDef ={
