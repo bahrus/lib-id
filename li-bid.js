@@ -3,14 +3,12 @@ import { xc } from 'xtal-element/lib/XtalCore.js';
 import { TemplateInstance } from 'templ-arts/lib/index.js';
 import { upShadowSearch } from 'trans-render/lib/upShadowSearch.js';
 export class LiBid extends IBid {
-    static is = 'li-bid';
-    propActions = propActions;
-    templateId;
-    templateMapIds;
-    templateMapElements;
-    _retries = 0;
-    mainTemplate;
-    templateInstances = new WeakMap();
+    constructor() {
+        super(...arguments);
+        this.propActions = propActions;
+        this._retries = 0;
+        this.templateInstances = new WeakMap();
+    }
     updateLightChildren(element, item, idx) {
         if (!this.templateInstances.has(element)) {
             let template;
@@ -35,7 +33,15 @@ export class LiBid extends IBid {
         super.connectedCallback();
         xc.mergeProps(this, slicedPropDefs);
     }
+    configureNewChild(newChild) {
+        if (this.tagAttr !== undefined) {
+            for (const key in this.tagAttr) {
+                newChild.setAttribute(key, this.tagAttr[key]);
+            }
+        }
+    }
 }
+LiBid.is = 'li-bid';
 const linkMainTemplate = ({ templateId, self }) => {
     let mainTemplate;
     if (templateId === 'innerTemplate') {
@@ -101,6 +107,7 @@ const strProp1 = {
 };
 const propDefMap = {
     templateMapIds: objProp2,
+    tagAttr: objProp2,
     templateMapElements: objProp1,
     //mainTemplate: objProp1,
     templateId: strProp1

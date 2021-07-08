@@ -2,15 +2,12 @@ import {IBid, objProp1, objProp2, onNewList, markOwnership, linkInitialized} fro
 import {xc, PropAction, PropDef, PropDefMap} from 'xtal-element/lib/XtalCore.js';
 import {TemplateInstance} from 'templ-arts/lib/index.js';
 import {upShadowSearch} from 'trans-render/lib/upShadowSearch.js';
+import {LiBidProps} from './types.d.js';
 
 export class LiBid extends IBid{
     static is = 'li-bid';
     propActions = propActions;
-    templateId: string | undefined;
-    templateMapIds: {[key: string] : string} | undefined;
-    templateMapElements: {[key: string]: HTMLTemplateElement} | undefined;
     _retries = 0;
-    mainTemplate: HTMLTemplateElement | undefined;
     templateInstances = new WeakMap<Element, TemplateInstance>();
     updateLightChildren(element: Element, item: any, idx: number){
         if(!this.templateInstances.has(element)){
@@ -33,7 +30,15 @@ export class LiBid extends IBid{
         super.connectedCallback();
         xc.mergeProps(this, slicedPropDefs);
     }
+    override configureNewChild(newChild: Element){
+        if(this.tagAttr !== undefined){
+            for(const key in this.tagAttr){
+                newChild.setAttribute(key, this.tagAttr[key]);
+            }
+        }
+    }
 }
+export interface LiBid extends LiBidProps{}
 
 const linkMainTemplate = ({templateId, self}: LiBid) => {
     let mainTemplate: HTMLTemplateElement | null;
@@ -103,8 +108,9 @@ const strProp1: PropDef = {
     stopReactionsIfFalsy: true,
     type: String,
 };
-const propDefMap: PropDefMap<LiBid> = {
+const propDefMap: PropDefMap<LiBidProps> = {
     templateMapIds: objProp2,
+    tagAttr: objProp2,
     templateMapElements: objProp1,
     //mainTemplate: objProp1,
     templateId: strProp1
