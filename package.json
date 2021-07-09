@@ -2,10 +2,31 @@
   "name": "lib-id",
   "version": "0.0.17",
   "description": "",
-  "main": "index.js",
+  "main": "li-bid.js",
+  "module": "li-bid.js",
+  "keywords": [
+    "webcomponents",
+    "webcomponent",
+    "customelements",
+    "customelement",
+    "repeat",
+    "dom-repeat"
+  ],
+  "exports": {
+    ".": "./li-bid.js",
+    "./li-bid.js": "./li-bid.js"
+  },
+  "files": [
+    "li*.*",
+    "types.d.ts",
+    "custom-elements.json"
+  ],
+  "types": "./types.d.ts",
   "scripts": {
     "serve": "node node_modules/xtal-test/serve.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "package-check": "package-check",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "doc": "custom-elements-manifest analyze"
   },
   "repository": {
     "type": "git",
@@ -18,12 +39,14 @@
   },
   "devDependencies": {
     "@skypack/package-check": "0.2.2",
-    "xtal-test": "0.0.51"
+    "xtal-test": "0.0.51",
+    "@custom-elements-manifest/analyzer": "0.4.11"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bahrus/lib-id/issues"
   },
-  "homepage": "https://github.com/bahrus/lib-id#readme"
+  "homepage": "https://github.com/bahrus/lib-id#readme",
+  "customElements": "custom-elements.json"
 }

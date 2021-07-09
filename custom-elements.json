@@ -1,0 +1,183 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "li-bid.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "LiBid",
+          "members": [
+            {
+              "kind": "field",
+              "name": "is",
+              "type": {
+                "text": "string"
+              },
+              "static": true,
+              "default": "'li-bid'"
+            },
+            {
+              "kind": "field",
+              "name": "propActions",
+              "default": "[\n    linkMainTemplate,\n    //linkInitialized,\n    templatesManaged,\n    onNewList,\n]",
+              "type": {
+                "text": "array"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "_retries",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "templateInstances",
+              "default": "new WeakMap()"
+            },
+            {
+              "kind": "method",
+              "name": "updateLightChildren",
+              "parameters": [
+                {
+                  "name": "element"
+                },
+                {
+                  "name": "item"
+                },
+                {
+                  "name": "idx"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "configureNewChild",
+              "parameters": [
+                {
+                  "name": "newChild"
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "IBid",
+            "package": "ib-id/i-bid.js"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LiBid",
+          "declaration": {
+            "name": "LiBid",
+            "module": "li-bid.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "li-bid.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "LiBid",
+          "members": [
+            {
+              "kind": "field",
+              "name": "is",
+              "type": {
+                "text": "string"
+              },
+              "static": true,
+              "default": "'li-bid'"
+            },
+            {
+              "kind": "field",
+              "name": "propActions",
+              "default": "[\r\n    linkMainTemplate,\r\n    //linkInitialized,\r\n    templatesManaged,\r\n    onNewList,\r\n]"
+            },
+            {
+              "kind": "field",
+              "name": "_retries",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "templateInstances",
+              "default": "new WeakMap<Element, TemplateInstance>()"
+            },
+            {
+              "kind": "method",
+              "name": "updateLightChildren",
+              "parameters": [
+                {
+                  "name": "element",
+                  "type": {
+                    "text": "Element"
+                  }
+                },
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "any"
+                  }
+                },
+                {
+                  "name": "idx",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "configureNewChild",
+              "parameters": [
+                {
+                  "name": "newChild",
+                  "type": {
+                    "text": "Element"
+                  }
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "IBid",
+            "package": "ib-id/i-bid.js"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "LiBid",
+          "declaration": {
+            "name": "LiBid",
+            "module": "li-bid.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "types.d.ts",
+      "declarations": [],
+      "exports": []
+    }
+  ]
+}
