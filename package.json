@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "templ-arts": "0.0.6",
-    "ib-id": "0.0.55",
+    "ib-id": "0.0.56",
     "trans-render": "0.0.291"
   },
   "devDependencies": {
