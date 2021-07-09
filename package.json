@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "templ-arts": "0.0.6",
-    "ib-id": "0.0.56",
+    "ib-id": "0.0.57",
     "trans-render": "0.0.291",
     "xtal-element": "0.0.413"
   },
