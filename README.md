@@ -1,20 +1,18 @@
 # li-bid
 
-li-bid provides a repeating web component.  It extends [i-bid](https://github.com/bahrus/ib-id).  Whereas i-bid has [no support for light children](https://github.com/bahrus/ib-id#what-if-i-want-to-repeat-some-web-components-that-require-non-shadow-light-children), li-bid does.  It uses github's [template parts library](https://github.com/github/template-parts/) to populate the light children.
+li-bid provides a repeating web component.  It extends [i-bid](https://github.com/bahrus/ib-id).  Whereas i-bid has [no support for light children](https://github.com/bahrus/ib-id#what-if-i-want-to-repeat-some-web-components-that-require-non-shadow-light-children), li-bid does.  Both i-bid and li-bid deviate from traditional repeating elements, in that the rendered content they produce is inserted adjacent to the i-bid/li-bid element.
 
-## Sample syntax I
+The question is where to get the light children from for a repeating element?  Most repeating elements allow us / force us to define the structure of the light children from within the tag.  li-bid supports this as well, but we need to be explicit that that is our intention, since other alternative locations to pull in the light children from are also provided by li-bid.
+
+li-bid provides basic support for dynamic setting attributes and interpolating inside tags.  It uses a fork of github's [template parts library](https://github.com/github/template-parts/) for this moustache-style binding.
+
+## Sample syntax I [TODO]
 
 ```html
 <ul>
-    <li>header</li>
-    <li-bid template-id=./message list='[{"msg": "hello 1"}, {"msg": "hello 2"}]'>
-        <li>
-            <template id=message>
-                <span>{{msg}}</span>
-            </template>
-        </li>
-    </li-bid>
-    <li>footer</li>
+    <li id=message><span data-target=msg>Message of the day</span></li>
+    <li-bid from=message bind-to=data-target list='[{"msg": "hello 1"}, {"msg": "hello 2"}]'></li-bid>
+    <li>Brought to you by Foot Blocker</li>
 </ul>
 ```
 
@@ -22,19 +20,15 @@ produces:
 
 ```html
 <ul>
-    <li>header</li>
-    <li-bid template-id=./message list='[{"msg": "hello 1"}, {"msg": "hello 2"}]' style="display:none;">
-        <template id=message>
-            <span>{{msg}}</span>
-        </template>
-    </li-bid>
+    <li>Message of the day</li>
+    <li-bid from=message bind-to=data-target list='[{"msg": "hello 1"}, {"msg": "hello 2"}]' style="display:none;"></li-bid>
     <li>
         <span>hello 1</span>
     </li>
     <li>
         <span>hello 2</span>
     </li>    
-    <li>footer</li>
+    <li>Brought to you by Foot Blocker</li>
 </ul>
 ```
 

@@ -29,7 +29,7 @@ const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
  */
 export class LiBid extends IBid{
     static is = 'li-bid';
-    static observedAttributes = [...IBid.observedAttributes, ...slicedPropDefs.boolNames, ...slicedPropDefs.numNames, ...slicedPropDefs.strNames];
+    static observedAttributes = [...IBid.observedAttributes, ...slicedPropDefs.boolNames, ...slicedPropDefs.numNames, ...slicedPropDefs.strNames, ...slicedPropDefs.parseNames];
     override attributeChangedCallback(n: string, ov: string, nv: string){
         super.attributeChangedCallback(n, ov, nv);
         xc.passAttrToProp(this, slicedPropDefs, n, ov, nv);
