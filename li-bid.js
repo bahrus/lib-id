@@ -2,8 +2,35 @@ import { IBid, objProp1, objProp2, onNewList, linkInitialized } from 'ib-id/i-bi
 import { xc } from 'xtal-element/lib/XtalCore.js';
 import { TemplateInstance } from 'templ-arts/lib/index.js';
 import { upShadowSearch } from 'trans-render/lib/upShadowSearch.js';
+//#region props
+const baseProp = {
+    dry: true,
+    async: true,
+};
+const strProp1 = {
+    ...baseProp,
+    stopReactionsIfFalsy: true,
+    type: String,
+};
+const propDefMap = {
+    templateMapIds: objProp2,
+    tagAttr: objProp2,
+    templateMapElements: objProp1,
+    templateId: strProp1
+};
+const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
+//#endregion
+/**
+ * @element li-bid
+ * @tag li-bid
+ */
 export class LiBid extends IBid {
     static is = 'li-bid';
+    static observedAttributes = [...IBid.observedAttributes, ...slicedPropDefs.boolNames, ...slicedPropDefs.numNames, ...slicedPropDefs.strNames];
+    attributeChangedCallback(n, ov, nv) {
+        super.attributeChangedCallback(n, ov, nv);
+        xc.passAttrToProp(this, slicedPropDefs, n, ov, nv);
+    }
     propActions = propActions;
     _retries = 0;
     templateInstances = new WeakMap();
@@ -93,22 +120,5 @@ const propActions = [
     templatesManaged,
     onNewList,
 ];
-const baseProp = {
-    dry: true,
-    async: true,
-};
-const strProp1 = {
-    ...baseProp,
-    stopReactionsIfFalsy: true,
-    type: String,
-};
-const propDefMap = {
-    templateMapIds: objProp2,
-    tagAttr: objProp2,
-    templateMapElements: objProp1,
-    //mainTemplate: objProp1,
-    templateId: strProp1
-};
-const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 xc.letThereBeProps(LiBid, slicedPropDefs, 'onPropChange');
 xc.define(LiBid);
