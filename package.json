@@ -33,17 +33,17 @@
     "url": "git+https://github.com/bahrus/lib-id.git"
   },
   "dependencies": {
-    "templ-arts": "0.0.6",
-    "ib-id": "0.0.58",
+    "templ-arts": "0.0.7",
+    "ib-id": "0.0.60",
     "trans-render": "0.0.291",
-    "xtal-element": "0.0.414"
+    "xtal-element": "0.0.419"
   },
   "devDependencies": {
     "@skypack/package-check": "0.2.2",
     "xtal-test": "0.0.51",
-    "@custom-elements-manifest/analyzer": "0.4.12"
+    "@custom-elements-manifest/analyzer": "0.4.16"
   },
-  "author": "",
+  "author": "anderson.bruce.b@gmail.com",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bahrus/lib-id/issues"
