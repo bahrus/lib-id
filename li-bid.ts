@@ -1,4 +1,4 @@
-import {IBid, objProp1, objProp2, onNewList, markOwnership, linkInitialized} from 'ib-id/i-bid.js';
+import {IBid, objProp1, objProp2, onNewList, markOwnership, linkInitialized, boolProp1, boolProp2} from 'ib-id/i-bid.js';
 import {xc, PropAction, PropDef, PropDefMap} from 'xtal-element/lib/XtalCore.js';
 import {TemplateInstance} from 'templ-arts/lib/index.js';
 import {upShadowSearch} from 'trans-render/lib/upShadowSearch.js';
@@ -9,7 +9,7 @@ const baseProp: PropDef ={
     dry: true,
     async: true,
 };
-const strProp1: PropDef = {
+const strProp2: PropDef = {
     ...baseProp,
     stopReactionsIfFalsy: true,
     type: String,
@@ -17,8 +17,11 @@ const strProp1: PropDef = {
 const propDefMap: PropDefMap<LiBidProps> = {
     templateMapIds: objProp2,
     tagAttr: objProp2,
+    etc: objProp1,
     templateMapElements: objProp1,
-    templateId: strProp1
+    from: strProp2,
+    fromChildTemplate: boolProp2,
+    fct: boolProp2,
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 //#endregion
@@ -35,7 +38,6 @@ export class LiBid extends IBid{
         xc.passAttrToProp(this, slicedPropDefs, n, ov, nv);
     }
     propActions = propActions;
-    _retries = 0;
     templateInstances = new WeakMap<Element, TemplateInstance>();
     updateLightChildren(element: Element, item: any, idx: number){
         if(!this.templateInstances.has(element)){
@@ -44,7 +46,7 @@ export class LiBid extends IBid{
                 template = this.templateMapElements![element.localName];
                 if(template === undefined) return;
             }else{
-                template = this.mainTemplate;
+                template = this.etc as HTMLTemplateElement; //TODO:  handle non template
             }
             const tpl = new TemplateInstance(template!, item);
             this.templateInstances.set(element, tpl);
@@ -67,35 +69,41 @@ export class LiBid extends IBid{
     }
 }
 export interface LiBid extends LiBidProps{}
+type L = LiBid;
 
-const linkMainTemplate = ({templateId, self}: LiBid) => {
+const onFrom = ({from, self}: L) => {
     let mainTemplate: HTMLTemplateElement | null;
-    if(templateId === 'innerTemplate'){
-        mainTemplate = self.querySelector('template');
-    }else{
-        mainTemplate = upShadowSearch(self, templateId!) as HTMLTemplateElement | null;
+    mainTemplate = upShadowSearch(self, from!) as HTMLTemplateElement | null;
+    if(mainTemplate === null) {
+        console.error("Unable to locate template: " + from, self);
+        return;
     }
-    if(mainTemplate === null){
-        if(self._retries < 1){
-            self._retries++;
-            setTimeout(() =>{
-                linkMainTemplate(self);
-            }, 50);
-            return;
-        }else{
-            console.error("Unable to locate template: " + templateId, self);
-            return;
-        }
-    } 
-    self.mainTemplate = mainTemplate;
-    const parentElement = mainTemplate.parentElement;
-    if(parentElement !== null && parentElement !== self && self.contains(mainTemplate)){
-        self.appendChild(mainTemplate);
-    }
-    linkInitialized(self);
+    self.etc = mainTemplate;
 };
 
+const onFromChildTemplate = ({fromChildTemplate, self}: L) => {
+    getInnerTemplate(self, 0);
+};
 
+const onFct = ({fct, self}: L) => {
+    getInnerTemplate(self, 0);
+}
+
+function getInnerTemplate(self: L, retries: number){
+    const templ = self.querySelector('template');
+    if(templ === null){
+        if(retries > 2) throw "Inner template not found";
+        setTimeout(() => {
+            getInnerTemplate(self, retries + 1);
+        }, 50)
+        return;
+    }
+    self.etc = templ;
+}
+
+const onEtcFound = ({etc, self}: L) => {
+    linkInitialized(self);
+}
 
 const templatesManaged = ({templateMapIds, self}: LiBid) => {
     
@@ -121,7 +129,9 @@ const templatesManaged = ({templateMapIds, self}: LiBid) => {
 // }
 
 const propActions = [
-    linkMainTemplate,
+    onFrom,
+    onFromChildTemplate,
+    onEtcFound,
     //linkInitialized,
     templatesManaged,
     onNewList,

@@ -1,4 +1,4 @@
-import { IBid, objProp1, objProp2, onNewList, linkInitialized } from 'ib-id/i-bid.js';
+import { IBid, objProp1, objProp2, onNewList, linkInitialized, boolProp2 } from 'ib-id/i-bid.js';
 import { xc } from 'xtal-element/lib/XtalCore.js';
 import { TemplateInstance } from 'templ-arts/lib/index.js';
 import { upShadowSearch } from 'trans-render/lib/upShadowSearch.js';
@@ -7,7 +7,7 @@ const baseProp = {
     dry: true,
     async: true,
 };
-const strProp1 = {
+const strProp2 = {
     ...baseProp,
     stopReactionsIfFalsy: true,
     type: String,
@@ -15,8 +15,11 @@ const strProp1 = {
 const propDefMap = {
     templateMapIds: objProp2,
     tagAttr: objProp2,
+    etc: objProp1,
     templateMapElements: objProp1,
-    templateId: strProp1
+    from: strProp2,
+    fromChildTemplate: boolProp2,
+    fct: boolProp2,
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 //#endregion
@@ -32,7 +35,6 @@ export class LiBid extends IBid {
         xc.passAttrToProp(this, slicedPropDefs, n, ov, nv);
     }
     propActions = propActions;
-    _retries = 0;
     templateInstances = new WeakMap();
     updateLightChildren(element, item, idx) {
         if (!this.templateInstances.has(element)) {
@@ -43,7 +45,7 @@ export class LiBid extends IBid {
                     return;
             }
             else {
-                template = this.mainTemplate;
+                template = this.etc; //TODO:  handle non template
             }
             const tpl = new TemplateInstance(template, item);
             this.templateInstances.set(element, tpl);
@@ -66,32 +68,34 @@ export class LiBid extends IBid {
         }
     }
 }
-const linkMainTemplate = ({ templateId, self }) => {
+const onFrom = ({ from, self }) => {
     let mainTemplate;
-    if (templateId === 'innerTemplate') {
-        mainTemplate = self.querySelector('template');
-    }
-    else {
-        mainTemplate = upShadowSearch(self, templateId);
-    }
+    mainTemplate = upShadowSearch(self, from);
     if (mainTemplate === null) {
-        if (self._retries < 1) {
-            self._retries++;
-            setTimeout(() => {
-                linkMainTemplate(self);
-            }, 50);
-            return;
-        }
-        else {
-            console.error("Unable to locate template: " + templateId, self);
-            return;
-        }
+        console.error("Unable to locate template: " + from, self);
+        return;
     }
-    self.mainTemplate = mainTemplate;
-    const parentElement = mainTemplate.parentElement;
-    if (parentElement !== null && parentElement !== self && self.contains(mainTemplate)) {
-        self.appendChild(mainTemplate);
+    self.etc = mainTemplate;
+};
+const onFromChildTemplate = ({ fromChildTemplate, self }) => {
+    getInnerTemplate(self, 0);
+};
+const onFct = ({ fct, self }) => {
+    getInnerTemplate(self, 0);
+};
+function getInnerTemplate(self, retries) {
+    const templ = self.querySelector('template');
+    if (templ === null) {
+        if (retries > 2)
+            throw "Inner template not found";
+        setTimeout(() => {
+            getInnerTemplate(self, retries + 1);
+        }, 50);
+        return;
     }
+    self.etc = templ;
+}
+const onEtcFound = ({ etc, self }) => {
     linkInitialized(self);
 };
 const templatesManaged = ({ templateMapIds, self }) => {
@@ -115,7 +119,9 @@ const templatesManaged = ({ templateMapIds, self }) => {
 //     }
 // }
 const propActions = [
-    linkMainTemplate,
+    onFrom,
+    onFromChildTemplate,
+    onEtcFound,
     //linkInitialized,
     templatesManaged,
     onNewList,
